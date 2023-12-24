@@ -42,6 +42,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
             // 设置方向
             enemyTank.setDirect(2);
+            // 启动敌人坦克线程
+            new Thread(enemyTank).start();
             // 加入子弹
             Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirect());
             enemyTank.getShots().add(shot);
@@ -233,16 +235,24 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             // 改变坦克的方向
             hero.setDirect(0);
             // 修改坦克的坐标
-            hero.moveUp();
+            if (hero.getY() > 0) {
+                hero.moveUp();
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) { // 按下D键
             hero.setDirect(1);
-            hero.moveRight();
+            if (hero.getX() + 60 < 1000) {
+                hero.moveRight();
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) { // 按下S键
             hero.setDirect(2);
-            hero.moveDown();
+            if (hero.getY() + 60 < 750) {
+                hero.moveDown();
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) { // 按下A键
             hero.setDirect(3);
-            hero.moveLeft();
+            if (hero.getX() > 0) {
+                hero.moveLeft();
+            }
         }
         // 子弹发射
         if (e.getKeyCode() == KeyEvent.VK_J) {

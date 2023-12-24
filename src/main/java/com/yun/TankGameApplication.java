@@ -27,9 +27,9 @@ public class TankGameApplication extends JFrame {
         this.add(myPanel);
         // 窗口 JFrame 对象可以监听键盘事件, 即可以监听到面板发生的键盘事件
         this.addKeyListener(myPanel);
-        // 设置固定的窗口
+        // 设置窗口大小
         this.setSize(1000, 750);
-        this.setResizable(false);
+        // this.setResizable(false);  // 因窗口固定，导致坦克穿透窗口边框。去除
         // 当点击窗口的小 × 程序完全退出
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 显示

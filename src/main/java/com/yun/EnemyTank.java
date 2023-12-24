@@ -58,6 +58,61 @@ public class EnemyTank extends Tank implements Runnable {
                 shots.add(shot);
                 new Thread(shot).start();
             }
+            
+            // 根据坦克的方向来继续移动
+            switch (getDirect()) {
+                case 0: // 向上
+                    for (int i = 0; i < 40; i++) {
+                        if (getY() > 0) {
+                            moveUp();
+                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case 1: // 向右
+                    for (int i = 0; i < 20; i++) {
+                        if (getX() + 60 < 1000) {
+                            moveRight();
+                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case 2: // 向下
+                    for (int i = 0; i < 30; i++) {
+                        if (getY() + 60 < 750) {
+                            moveDown();
+                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case 3: // 向左
+                    for (int i = 0; i < 10; i++) {
+                        if (getX() > 0) {
+                            moveLeft();
+                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+            }
+            // 随机改变坦克方向 0-3
+            setDirect((int) (Math.random() * 4));
+            // setDirect(3);
             if (!isLive) {
                 break;
             }
