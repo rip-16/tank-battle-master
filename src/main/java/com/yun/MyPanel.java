@@ -14,38 +14,60 @@ import java.util.Vector;
  * @author: yun
  * @date: 2023年12月20日 14:17
  */
-public class MyPanel extends JPanel implements KeyListener {
+public class MyPanel extends JPanel implements KeyListener, Runnable {
     
-    // 定义用户的坦克
+    // 定义玩家的坦克
     Hero hero = null;
     
     // 敌方坦克放入 Vector
     Vector<EnemyTank> enemyTanks = new Vector<>();
     int enemyTankSize = 3;
     
-    // 初始化用户的坦克
+    // 初始化坦克
     public MyPanel() {
+        // 创建玩家坦克
         hero = new Hero(100, 100);
         // 创建敌方坦克
         for (int i = 0; i < enemyTankSize; i++) {
             EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
             // 设置方向
             enemyTank.setDirect(2);
+            // 加入子弹
+            Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirect());
+            enemyTank.getShots().add(shot);
+            new Thread(shot).start();
             enemyTanks.add(enemyTank);
         }
     }
     
     @Override
     public void paint(Graphics g) {
-        // 用户的坦克
         super.paint(g);
         // 填充矩形，默认黑色
         g.fillRect(0, 0, 1000, 750);
-        // 画出坦克
+        // 画出玩家坦克
         drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), 0);
+        // hero射击的子弹
+        if (hero.shot != null && hero.shot.isLive() == true) {
+            g.draw3DRect(hero.shot.getX(), hero.shot.getY(), 1, 1, false);
+        }
         // 敌方坦克
-        for (EnemyTank enemyTank : enemyTanks) {
-            drawTank(enemyTank.getX(), enemyTank.getY(), g, enemyTank.getDirect(), 1);
+        for (int i = 0; i < enemyTanks.size(); i++) {
+            EnemyTank enemyTank = enemyTanks.get(i);
+            // 判断当前坦克是否还存活
+            if (enemyTank.isLive()) {
+                // 当坦克是存活的，才画出该坦克
+                drawTank(enemyTank.getX(), enemyTank.getY(), g, enemyTank.getDirect(), 1);
+                // enemyTank射击的子弹
+                for (int j = 0; j < enemyTank.getShots().size(); j++) {
+                    Shot shot = enemyTank.getShots().get(j);
+                    if (shot.isLive()) {
+                        g.draw3DRect(shot.getX(), shot.getY(), 1, 1, false);
+                    } else {
+                        enemyTank.getShots().remove(shot);
+                    }
+                }
+            }
         }
         
     }
@@ -64,7 +86,7 @@ public class MyPanel extends JPanel implements KeyListener {
     private void drawTank(int x, int y, Graphics g, int direct, int type) {
         // 根据不同类型坦克，设置不同颜色
         switch (type) {
-            case 0: // 用户的坦克
+            case 0: // 玩家的坦克
                 g.setColor(Color.cyan);
                 break;
             case 1: // 敌人的坦克
@@ -131,6 +153,11 @@ public class MyPanel extends JPanel implements KeyListener {
             hero.setDirect(3);
             hero.moveLeft();
         }
+        // 子弹发射
+        if (e.getKeyCode() == KeyEvent.VK_J) {
+            System.out.println("开始射击");
+            hero.shotEnemyTank();
+        }
         // 面板重绘
         this.repaint();
     }
@@ -139,5 +166,23 @@ public class MyPanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     
+    }
+    
+    /**
+     * @description: 每隔100毫秒，重绘区域，刷新绘图区域让子弹移动
+     * @author: yun
+     * @date: 2023/12/24 12:27
+     * @return: void
+     */
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            this.repaint();
+        }
     }
 }
