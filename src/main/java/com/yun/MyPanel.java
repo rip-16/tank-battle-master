@@ -65,8 +65,16 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         // 画出玩家坦克
         drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), 0);
         // hero射击的子弹
-        if (hero.shot != null && hero.shot.isLive() == true) {
-            g.fillRect(hero.shot.getX(), hero.shot.getY(), 4, 4);
+        // if (hero.shot != null && hero.shot.isLive() == true) {
+        //     g.fillRect(hero.shot.getX(), hero.shot.getY(), 4, 4);
+        // }
+        for (int j = 0; j < hero.shots.size(); j++) {
+            Shot shot = hero.shots.get(j);
+            if (shot != null && shot.isLive()) {
+                g.fillRect(shot.getX(), shot.getY(), 4, 4);
+            } else {
+                hero.shots.remove(shot);
+            }
         }
         // 如果bombs集合中有对象
         for (int i = 0; i < bombs.size(); i++) {
@@ -173,11 +181,22 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
      */
     public void hitEnemyTank() {
         // 单颗子弹。
-        if (hero.shot != null && hero.shot.isLive()) { // 当玩家子弹还存活
-            // 遍历敌人所有的坦克
-            for (int i = 0; i < enemyTanks.size(); i++) {
-                EnemyTank enemyTank = enemyTanks.get(i);
-                hitTank(hero.shot, enemyTank);
+        // if (hero.shot != null && hero.shot.isLive()) { // 当玩家子弹还存活
+        //     // 遍历敌人所有的坦克
+        //     for (int i = 0; i < enemyTanks.size(); i++) {
+        //         EnemyTank enemyTank = enemyTanks.get(i);
+        //         hitTank(hero.shot, enemyTank);
+        //     }
+        // }
+        // 多颗子弹
+        for (int j = 0; j < hero.shots.size(); j++) {
+            Shot shot = hero.shots.get(j);
+            if (shot != null && shot.isLive()) { // 当玩家子弹还存活
+                // 遍历敌人所有的坦克
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    EnemyTank enemyTank = enemyTanks.get(i);
+                    hitTank(shot, enemyTank);
+                }
             }
         }
     }
@@ -257,9 +276,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         // 子弹发射
         if (e.getKeyCode() == KeyEvent.VK_J) {
             System.out.println("开始射击");
-            if (hero.shot == null || !hero.shot.isLive()) {
-                hero.shotEnemyTank();
-            }
+            // if (hero.shot == null || !hero.shot.isLive()) {
+            //     hero.shotEnemyTank();
+            // }
+            // 多颗子弹
+            hero.shotEnemyTank();
         }
         // 面板重绘
         this.repaint();
