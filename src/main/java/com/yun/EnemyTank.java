@@ -38,7 +38,7 @@ public class EnemyTank extends Tank implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (isLive && shots.size() < 1) {
+            if (isLive && shots.size() < 10) {
                 Shot shot = null;
                 // 判断坦克的方向，创建对应的子弹
                 switch (getDirect()) {
