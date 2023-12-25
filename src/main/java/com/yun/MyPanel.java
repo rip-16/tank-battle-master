@@ -202,39 +202,61 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     }
     
     /**
+     * @description: 判断敌方子弹是否击中玩家坦克
+     * @author: yun
+     * @date: 2023/12/25 20:22
+     * @return: void
+     */
+    public void hitHero() {
+        for (int j = 0; j < enemyTanks.size(); j++) {
+            // 取出敌方坦克
+            EnemyTank enemyTank = enemyTanks.get(j);
+            for (int i = 0; i < enemyTank.getShots().size(); i++) {
+                // 取出子弹
+                Shot shot = enemyTank.getShots().get(i);
+                // 判断是否击中玩家坦克
+                if (hero.isLive() && shot.isLive()) {
+                    hitTank(shot, hero);
+                }
+            }
+            
+        }
+    }
+    
+    /**
      * @param shot:
-     * @param enemyTank:
+     * @param tank:
      * @description: 判断子弹是否击中坦克
      * @author: yun
      * @date: 2023/12/24 18:13
      * @return: void
      */
-    public void hitTank(Shot shot, EnemyTank enemyTank) {
+    public void hitTank(Shot shot, Tank tank) {
         // 判断shot击中坦克
-        switch (enemyTank.getDirect()) {
+        switch (tank.getDirect()) {
             case 0: // 上
             case 2: // 下
-                if (shot.getX() > enemyTank.getX() && shot.getX() < enemyTank.getX() + 40
-                        && shot.getY() > enemyTank.getY() && shot.getY() < enemyTank.getY() + 60) {
+                if (shot.getX() > tank.getX() && shot.getX() < tank.getX() + 40
+                        && shot.getY() > tank.getY() && shot.getY() < tank.getY() + 60) {
                     shot.setLive(false);
-                    enemyTank.setLive(false);
+                    tank.setLive(false);
                     // 当玩家子弹击中敌人坦克后，将enemyTank从Vector移除
-                    enemyTanks.remove(enemyTank);
+                    enemyTanks.remove(tank);
                     // 创建Bomb对象，加入到bombs集合
-                    Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
+                    Bomb bomb = new Bomb(tank.getX(), tank.getY());
                     bombs.add(bomb);
                 }
                 break;
             case 1: // 右
             case 3: // 左
-                if (shot.getX() > enemyTank.getX() && shot.getX() < enemyTank.getX() + 60
-                        && shot.getY() > enemyTank.getY() && shot.getY() < enemyTank.getY() + 40) {
+                if (shot.getX() > tank.getX() && shot.getX() < tank.getX() + 60
+                        && shot.getY() > tank.getY() && shot.getY() < tank.getY() + 40) {
                     shot.setLive(false);
-                    enemyTank.setLive(false);
+                    tank.setLive(false);
                     // 当玩家子弹击中敌人坦克后，将enemyTank从Vector移除
-                    enemyTanks.remove(enemyTank);
+                    enemyTanks.remove(tank);
                     // 创建Bomb对象，加入到bombs集合
-                    Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
+                    Bomb bomb = new Bomb(tank.getX(), tank.getY());
                     bombs.add(bomb);
                 }
                 break;
@@ -308,6 +330,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             }
             // 判断玩家的子弹是否击中敌人坦克
             hitEnemyTank();
+            // 判断敌方的子弹是否击中玩家坦克
+            hitHero();
             this.repaint();
         }
     }

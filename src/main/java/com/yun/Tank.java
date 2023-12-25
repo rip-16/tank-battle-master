@@ -16,6 +16,8 @@ public class Tank {
     private int direct = 0;
     // 速度
     private int speed = 1;
+    // 是否存活
+    private boolean isLive = true;
     
     public Tank(int x, int y) {
         this.x = x;
@@ -69,5 +71,13 @@ public class Tank {
     
     public void moveLeft() {
         x -= speed;
+    }
+    
+    public boolean isLive() {
+        return isLive;
+    }
+    
+    public void setLive(boolean live) {
+        isLive = live;
     }
 }
