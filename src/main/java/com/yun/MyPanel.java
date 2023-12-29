@@ -87,7 +87,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.fillRect(0, 0, 1000, 750);
         showInfo(g);
         // 画出玩家坦克
-        drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), 0);
+        if (hero != null && hero.isLive()) {
+            drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), 0);
+        }
         // hero射击的子弹
         // if (hero.shot != null && hero.shot.isLive() == true) {
         //     g.fillRect(hero.shot.getX(), hero.shot.getY(), 4, 4);
