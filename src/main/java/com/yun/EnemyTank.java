@@ -72,7 +72,7 @@ public class EnemyTank extends Tank implements Runnable {
             switch (getDirect()) {
                 case 0: // 向上
                     for (int i = 0; i < 40; i++) {
-                        if (getY() > 0) {
+                        if (getY() > 0 && !isTouchEnemyTank()) {
                             moveUp();
                         }
                         try {
@@ -84,7 +84,7 @@ public class EnemyTank extends Tank implements Runnable {
                     break;
                 case 1: // 向右
                     for (int i = 0; i < 20; i++) {
-                        if (getX() + 60 < 1000) {
+                        if (getX() + 60 < 1000 && !isTouchEnemyTank()) {
                             moveRight();
                         }
                         try {
@@ -96,7 +96,7 @@ public class EnemyTank extends Tank implements Runnable {
                     break;
                 case 2: // 向下
                     for (int i = 0; i < 30; i++) {
-                        if (getY() + 60 < 750) {
+                        if (getY() + 60 < 750 && !isTouchEnemyTank()) {
                             moveDown();
                         }
                         try {
@@ -108,7 +108,7 @@ public class EnemyTank extends Tank implements Runnable {
                     break;
                 case 3: // 向左
                     for (int i = 0; i < 10; i++) {
-                        if (getX() > 0) {
+                        if (getX() > 0 && !isTouchEnemyTank()) {
                             moveLeft();
                         }
                         try {
