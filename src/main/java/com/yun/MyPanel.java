@@ -47,6 +47,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         // 创建敌方坦克
         switch (key) {
             case "1":
+                Recorder.setAllEnemyTankNum(0);
                 for (int i = 0; i < enemyTankSize; i++) {
                     EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
                     // 设置方向
