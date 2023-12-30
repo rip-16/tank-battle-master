@@ -38,8 +38,18 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     
     // 初始化坦克
     public MyPanel(String key) {
-        // 获取存档信息
-        nodes = Recorder.getNodesAndEnemyTankRec();
+        // 判断myRecord.txt记录文件是否存在
+        File file = new File(Recorder.getRecordFile());
+        String fileName = Paths.get(file.toURI()).getFileName().toString();
+        String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
+        // 如果存在，就正常执行，如果文件不存在，开启新游戏，key = "1"
+        if (file.exists() && file.isFile() && fileSuffix.equals(".txt")) {
+            // 获取存档信息
+            nodes = Recorder.getNodesAndEnemyTankRec();
+        } else {
+            key = "1";
+            System.out.println("无存档信息，开启新游戏");
+        }
         // 指向Recorder对象的敌人坦克Vector，保存信息
         Recorder.setEnemyTanks(enemyTanks);
         // 创建玩家坦克
