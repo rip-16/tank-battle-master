@@ -43,7 +43,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         // 指向Recorder对象的敌人坦克Vector，保存信息
         Recorder.setEnemyTanks(enemyTanks);
         // 创建玩家坦克
-        hero = new Hero(100, 100);
+        hero = new Hero(500, 600);
         // 创建敌方坦克
         switch (key) {
             case "1":
