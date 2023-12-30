@@ -38,7 +38,9 @@ public class TankGameApplication extends JFrame {
         this.addKeyListener(myPanel);
         // 设置窗口大小
         this.setSize(1300, 800);
-        // this.setResizable(false);  // 因窗口固定，导致坦克穿透窗口边框。去除
+        this.setResizable(false);
+        // 设置标题
+        this.setTitle("坦克大战 V0.1");
         // 当点击窗口的小 × 程序完全退出
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 显示
