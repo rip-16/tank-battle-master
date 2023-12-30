@@ -2,6 +2,7 @@ package com.yun;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
@@ -21,8 +22,8 @@ public class Recorder {
     private static String recordFile = "src\\main\\resources\\myRecord.txt";
     // 指向MyPanel对象的敌人坦克Vector
     private static Vector<EnemyTank> enemyTanks = null;
-    // 保存敌人的信息
-    // private static Vector<>
+    // 保存敌人坦克的信息
+    private static Vector<Node> nodes = new Vector<>();
     
     
     public static int getAllEnemyTankNum() {
@@ -79,5 +80,37 @@ public class Recorder {
      */
     public static void addAllEnemyTankNum() {
         Recorder.allEnemyTankNum++;
+    }
+    
+    /**
+     * @description: 读取recordFile, 恢复存档信息
+     * @author: yun
+     * @date: 2023/12/30 9:25
+     * @return: java.util.Vector<com.yun.Node>
+     */
+    public static Vector<Node> getNodesAndEnemyTankRec() {
+        try {
+            String len = "";
+            bufferedReader = new BufferedReader(new FileReader(recordFile));
+            // 读取击毁敌方坦克数量
+            allEnemyTankNum = Integer.parseInt(bufferedReader.readLine());
+            // 读取坦克的坐标和方向
+            while ((len = bufferedReader.readLine()) != null) {
+                String[] nodeSpilt = len.split(" ");
+                Node node = new Node(Integer.parseInt(nodeSpilt[0]), Integer.parseInt(nodeSpilt[1]), Integer.parseInt(nodeSpilt[2]));
+                nodes.add(node);
+            }
+        } catch (IOException e) {
+            System.out.println("recordFile 读取存档失败");
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                System.out.println("bufferedReader 关闭失败");
+                throw new RuntimeException(e);
+            }
+        }
+        return nodes;
     }
 }

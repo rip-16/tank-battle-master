@@ -3,6 +3,7 @@ package com.yun;
 import javax.swing.JFrame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Scanner;
 
 /**
  * 功能描述
@@ -15,14 +16,20 @@ public class TankGameApplication extends JFrame {
     
     // 定义玩家的坦克
     private MyPanel myPanel;
+    // 玩家开局的选择
+    private String key = "";
     
     public static void main(String[] args) {
         TankGameApplication tankGameApplication = new TankGameApplication();
     }
     
     public TankGameApplication() {
+        // 玩家选择开局项
+        System.out.println("请选择：1 新游戏  2 继续上局");
+        Scanner scanner = new Scanner(System.in);
+        key = scanner.next();
         // 初始化面板
-        myPanel = new MyPanel();
+        myPanel = new MyPanel(key);
         // 启动线程，刷新绘图区域让子弹移动
         new Thread(myPanel).start();
         // 把画板放入到窗口（画框）
