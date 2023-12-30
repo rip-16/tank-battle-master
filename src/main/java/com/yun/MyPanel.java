@@ -50,7 +50,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                 for (int i = 0; i < enemyTankSize; i++) {
                     EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
                     // 设置方向
-                    enemyTank.setDirect(2);
+                    enemyTank.setDirect((int) (Math.random() * 4));
                     enemyTankInitAndStart(enemyTank);
                 }
                 break;
